@@ -29,6 +29,7 @@
 
 #include "os.h"
 
+#undef __P
 #if defined(__STDC__)
 # ifndef __P
 #  define __P(a) a
