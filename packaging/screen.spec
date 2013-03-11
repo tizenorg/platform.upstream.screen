@@ -62,6 +62,13 @@ chmod 1777 $RPM_BUILD_ROOT/var/run/uscreens
 install -m 644 screenrc $RPM_BUILD_ROOT/etc/screenrc
 install -m 644 %SOURCE1 $RPM_BUILD_ROOT/usr/lib/tmpfiles.d
 
+%post
+# Create our dirs immediatly, after a manual package install.
+# After a reboot systemd/aaa_base will take care.
+test -d /var/run/screens || mkdir -m 755 /var/run/screens
+test -d /var/run/uscreens || mkdir -m 1777 /var/run/uscreens
+
+
 %files
 %defattr(-,root,root)
 %config /etc/screenrc
@@ -75,9 +82,4 @@ install -m 644 %SOURCE1 $RPM_BUILD_ROOT/usr/lib/tmpfiles.d
 %ghost %dir /var/run/uscreens
 %doc %{_infodir}/screen.info*.gz
 %doc %{_mandir}/man1/screen.1.gz
-
-# Create our dirs immediatly, after a manual package install.
-# After a reboot systemd/aaa_base will take care.
-test -d /var/run/screens || mkdir -m 755 /var/run/screens
-test -d /var/run/uscreens || mkdir -m 1777 /var/run/uscreens
 
