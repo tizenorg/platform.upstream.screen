@@ -70,6 +70,7 @@ test -d /var/run/uscreens || mkdir -m 1777 /var/run/uscreens
 
 
 %files
+%license COPYING
 %defattr(-,root,root)
 %config /etc/screenrc
 %attr(555,root,root) /usr/bin/screen
