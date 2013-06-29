@@ -26,6 +26,7 @@ License:        GPL-2.0+
 Group:          System/Console
 Source:         %{name}-%{version}.tar.gz
 Source1:        screen.conf
+Source1001: 	screen.manifest
 
 %description
 With this program you can take advantage of the multitasking abilities
@@ -36,6 +37,7 @@ Documentation: man page
 
 %prep
 %setup
+cp %{SOURCE1001} .
 %build
 CFLAGS="-DMAXWIN=1000 $RPM_OPT_FLAGS" %configure --prefix=/usr --infodir=%{_infodir} \
 				--mandir=%{_mandir} \
@@ -70,6 +72,7 @@ test -d /var/run/uscreens || mkdir -m 1777 /var/run/uscreens
 
 
 %files
+%manifest %{name}.manifest
 %license COPYING
 %defattr(-,root,root)
 %config /etc/screenrc
