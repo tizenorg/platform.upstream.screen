@@ -137,7 +137,7 @@ comm.h: comm.c comm.sh config.h
 	AWK=$(AWK) CC="$(CC) $(CFLAGS)" srcdir=${srcdir} sh $(srcdir)/comm.sh
 
 osdef.h: osdef.sh config.h osdef.h.in
-	CPP="$(CPP) $(CPPFLAGS) $(CFLAGS)" srcdir=${srcdir} sh $(srcdir)/osdef.sh
+	CPP="$(CPP) $(CPPFLAGS)" srcdir=${srcdir} sh $(srcdir)/osdef.sh
 
 docs:
 	cd doc; $(MAKE) dvi screen.info
@@ -188,7 +188,7 @@ $(SCREEN).tar: .version term.h comm.h tty.c kmapdef.c
 	ln acls.h ansi.h display.h extern.h logfile.h mark.h os.h \
 	   layer.h patchlevel.h screen.h window.h image.h \
 	   osdef.h.in term.sh tty.sh comm.sh osdef.sh braille.h \
-	   sched.h layout.h viewport.h canvas.h list_generic.h \
+	   sched.h \
 	   $(CFILES) \
 	   ChangeLog COPYING INSTALL NEWS* TODO install.sh \
 	   dist/$(SCREEN)
@@ -350,7 +350,7 @@ layout.o: layout.h viewport.h canvas.h layout.c config.h screen.h os.h osdef.h a
 viewport.o: layout.h viewport.h canvas.h viewport.c config.h screen.h os.h osdef.h ansi.h acls.h \
  comm.h layer.h term.h image.h display.h window.h extern.h \
  braille.h
-list_generic.o: list_generic.h list_generic.c layer.h osdef.h
-list_display.o: list_generic.h list_display.c layer.h osdef.h
-list_window.o: list_generic.h list_window.c window.h layer.h osdef.h
+list_generic.o: list_generic.h list_generic.c layer.h
+list_display.o: list_generic.h list_display.c layer.h
+list_window.o: list_generic.h list_window.c window.h layer.h
 
