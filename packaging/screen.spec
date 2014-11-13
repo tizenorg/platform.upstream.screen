@@ -18,15 +18,15 @@ Name:           screen
 BuildRequires:  makeinfo
 BuildRequires:  ncurses-devel
 BuildRequires:  utempter-devel
-Requires(pre):         coreutils
-Version:        4.0.4
+Requires(pre):  coreutils
+Version:        4.2.0
 Release:        0
 Summary:        A program to allow multiple screens on a VT100/ANSI Terminal
-License:        GPL-2.0+
-Group:          System/Console
+License:        GPL-3.0
+Group:          System/Utilities
 Source:         %{name}-%{version}.tar.gz
 Source1:        screen.conf
-Source1001: 	screen.manifest
+Source1001:     screen.manifest
 
 %description
 With this program you can take advantage of the multitasking abilities
@@ -38,19 +38,20 @@ Documentation: man page
 %prep
 %setup
 cp %{SOURCE1001} .
+
 %build
-CFLAGS="-DMAXWIN=1000 $RPM_OPT_FLAGS" %configure --prefix=/usr --infodir=%{_infodir} \
-				--mandir=%{_mandir} \
-				--with-socket-dir='(eff_uid ? "/var/run/uscreens" : "/var/run/screens")' \
-				--with-sys-screenrc=/etc/screenrc \
-				--with-pty-group=5 \
-				--enable-use-locale \
-				--enable-colors256 \
-				--verbose
-make %{?_smp_mflags}
+CFLAGS="-DMAXWIN=1000 $RPM_OPT_FLAGS" %reconfigure --prefix=/usr --infodir=%{_infodir} \
+                --mandir=%{_mandir} \
+                --with-socket-dir='(eff_uid ? "/var/run/uscreens" : "/var/run/screens")' \
+                --with-sys-screenrc=/etc/screenrc \
+                --with-pty-group=5 \
+                --enable-use-locale \
+                --enable-colors256 \
+                --verbose
+%__make -j1
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 rm -f $RPM_BUILD_ROOT/usr/bin/screen
 mv $RPM_BUILD_ROOT/usr/bin/screen-%version $RPM_BUILD_ROOT/usr/bin/screen
 chmod 755 $RPM_BUILD_ROOT/usr/bin/screen
@@ -75,15 +76,14 @@ test -d /var/run/uscreens || mkdir -m 1777 /var/run/uscreens
 %manifest %{name}.manifest
 %license COPYING
 %defattr(-,root,root)
-%config /etc/screenrc
-%attr(555,root,root) /usr/bin/screen
+%config %{_sysconfdir}/screenrc
+%attr(555,root,root) %{_bindir}/screen
 %dir /usr/share/screen
 %dir /usr/lib/tmpfiles.d
-/usr/lib/tmpfiles.d/screen.conf
-/usr/share/screen/utf8encodings
+/%{_prefix}/lib/tmpfiles.d/screen.conf
+%{_datadir}/%{name}/utf8encodings
 # Created via aaa_base or systemd on system boot
 %ghost %dir /var/run/screens
 %ghost %dir /var/run/uscreens
 %doc %{_infodir}/screen.info*.gz
 %doc %{_mandir}/man1/screen.1.gz
-
