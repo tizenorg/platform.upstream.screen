@@ -28,6 +28,11 @@ Source:         %{name}-%{version}.tar.gz
 Source1:        screen.conf
 Source1001:     screen.manifest
 
+%if ! %{?license:0}
+%define license %doc
+%endif
+
+
 %description
 With this program you can take advantage of the multitasking abilities
 of your Linux system by opening several sessions over one terminal. The
